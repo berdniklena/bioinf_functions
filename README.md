@@ -1,53 +1,62 @@
-**Bioinformatics utilities**
+**Bioinformatics utilities (OOP + FASTQ filtering with Biopython)**
 
-A small collection of Python tools for basic bioinformatics workflows, including DNA/RNA sequence operations, FASTQ filtering, FASTA processing, and simple BLAST result extraction.
+This repository contains two main components:
 
-Features
+1. Object-оriented implementation of biological sequences
 
-1. DNA/RNA sequence utilities
-Use run_dna_rna_tools() to apply common operations:
-- is_nucleic_acid - check if sequences are valid DNA/RNA
-- transcribe - DNA → RNA
-- reverse - reverse sequences
-- complement - DNA complement
-- reverse_complement - reverse DNA complement
+2. FASTQ read filtering using Biopython
 
-2. FASTQ filtering
-filter_fastq() filters reads based on:
-- GC-content (gc_bounds)
-- sequence length (length_bounds)
-- average quality score (quality_threshold)
-Filtered reads are written to filtered/filtered.fastq.
+The project is educational and demonstrates both OOP principles and basic FASTQ processing.
 
-3. FASTA and BLAST processing
-- convert_multiline_fasta_to_oneline() - converts multiline FASTA into one-line-per-sequence format.
-Converted format is written to converted/output.fa
-- parse_blast_output() - extracts protein IDs with significant BLAST hits.
-Filtered and sorted proteins ID are written to filtered/filtered_proteins.txt
+
+Requirements
+* Python 3.12
+* Biopython
+
+Install dependencies:
+```bash
+pip install biopython
+```
+
+**1. OOP: biological sequences**
+
+File: bioinf_functions_oop.py
+The following classes are implemented:
+* BiologicalSequence - abstract base class
+* NucleicAcidSequence - abstract class for nucleic acids
+* DNASequence - supports:
+    * reverse()
+    * complement()
+    * reverse_complement()
+    * transcribe()
+* RNASequence - RNA sequence validation
+* AminoAcidSequence - aminoacid sequence handling and alphabet validation
+
+**2. FASTQ filtering (Biopython)**
+
+File: FastQ_files_Biopy.py
+The function filter_fastq() filters reads based on:
+* GC content (gc_bounds)
+* Sequence length (length_bounds)
+* Mean Phred quality score (quality_threshold)
+
+GC content is calculated using Bio.SeqUtils.gc_fraction.
+Phred quality scores are extracted from Biopython via 
+```record.letter_annotations["phred_quality"]```
+Filtered reads are written to the filtered/ directory.
 
 
 **Project structure**
 ```
 BIOINF_FUNCTIONS/
-├── bioinf_functions.py
-├── bio_files_processor.py
-├── test_files.py
-├── test_nucleic_acids.py
+├── bioinf_functions_oop.py
+├── FastQ_files_Biopy.py
 ├── README.md
 │
 ├── example_data/
-│   ├── example_fastq.fastq
-│   ├── example_multiline_fasta.fasta
-│   └── example_blast_results.txt
+│   └── example_fastq.fastq
 │
-├── filtered/
-│   ├── filtered.fastq
-│   └── filtered_proteins.txt
-│
-├── converted/
-│   └── output.fa
-│
-└── tools/
-    ├── fastq_tools.py
-    └── rna_dna_tools.py
+└── filtered/
+    └── filtered.fastq
+
 ```
